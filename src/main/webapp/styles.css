@@ -48,8 +48,11 @@ table {
 }
 
 /* BLADERS Styles starts here*/
+@font-face {
+    font-family: Pxlvetica;
+    src: url("fonts/Pxlvetica.ttf");
+}
 body {
-    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#cfe7fa+0,6393c1+100;Grey+Blue+3D */
     background: #cfe7fa; /* Old browsers */
     background: -moz-linear-gradient(top, #cfe7fa 0%, #6393c1 100%); /* FF3.6-15 */
     background: -webkit-linear-gradient(top, #cfe7fa 0%,#6393c1 100%); /* Chrome10-25,Safari5.1-6 */
@@ -57,4 +60,48 @@ body {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cfe7fa', endColorstr='#6393c1',GradientType=0 ); /* IE6-9 */
 
     height: 100%;
+    font-family: sans-serif;
+
+    font-size: 100%;
+}
+.container {
+    display: block;
+    margin: 0 10%;
+    position: relative;
+    text-align: center;
+    font-size: 2rem;
+}
+.banner {
+    position: relative;
+    display: block;
+    text-align: center;
+}
+.logo {
+    font-family: Pxlvetica;
+    display: inline-block;
+    padding: 10px 0;
+    font-size: 5rem;
+    font-weight: 600;
+}
+
+.login-name,.login-pass{
+    display: block;
+    margin: 15px auto;
+    padding: 10px 40px;
+    background: rgba(255,255,255,.5);
+    text-align: center;
+    border: 2px #fff solid;
+}
+.login-btn {
+    cursor: pointer;
+    background: rgba(255,255,255,.5);
+    padding: 15px 40px;
+    border: none;
+    border-left: 1px #fff solid;
+    border-right: 1px #fff solid;
+}
+.login-btn:hover {
+    background: rgba(255,255,255,.66);
+    border-left-width: 3px;
+    border-right-width: 3px;
 }

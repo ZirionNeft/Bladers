@@ -1,4 +1,4 @@
-package entity;
+package zirioneft.bladers.entity;
 
 import javax.persistence.*;
 import javax.servlet.http.HttpServletRequest;

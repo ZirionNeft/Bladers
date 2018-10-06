@@ -50,58 +50,97 @@ table {
 /* BLADERS Styles starts here*/
 @font-face {
     font-family: Pxlvetica;
-    src: url("fonts/Pxlvetica.ttf");
+    src: url("../fonts/Pxlvetica.ttf");
+}
+html, body {
+    height: 100%;
+    font-size: 100%;
+    position: relative;
 }
 body {
-    background: #cfe7fa; /* Old browsers */
-    background: -moz-linear-gradient(top, #cfe7fa 0%, #6393c1 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, #cfe7fa 0%,#6393c1 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, #cfe7fa 0%,#6393c1 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cfe7fa', endColorstr='#6393c1',GradientType=0 ); /* IE6-9 */
-
-    height: 100%;
-    font-family: sans-serif;
-
-    font-size: 100%;
+    font-family: Pxlvetica;
+    background: url("../img/background.jpg") repeat-x  0 50% fixed;
+    animation: background 25s linear infinite;
+    -webkit-animation: background 25s linear infinite;
 }
 .container {
     display: block;
     margin: 0 10%;
     position: relative;
     text-align: center;
-    font-size: 2rem;
 }
+
+.button {
+    cursor: pointer;
+    padding: 10px 40px;
+    font-size: 2rem;
+    background: rgb(214, 106, 119);
+    text-align: center;
+    border: 3px #d66a77 solid;
+    color: #a85455;
+}
+.button:hover {
+    color: #d68c94;
+    background: rgba(214, 106, 119, .5);
+}
+
 .banner {
     position: relative;
     display: block;
     text-align: center;
 }
 .logo {
-    font-family: Pxlvetica;
     display: inline-block;
     padding: 10px 0;
-    font-size: 5rem;
+    font-size: 20rem;
     font-weight: 600;
 }
 
 .login-name,.login-pass{
     display: block;
     margin: 15px auto;
-    padding: 10px 40px;
-    background: rgba(255,255,255,.5);
+    padding: 10px 25px;
+    font-size: 2rem;
+    background: rgba(246, 194, 144, .5);
     text-align: center;
-    border: 2px #fff solid;
+    border: 3px #d66a77 solid;
+    color: #fad8cf;
 }
-.login-btn {
-    cursor: pointer;
+
+.game-info {
+    font-size: 3rem;
+}
+.game-info b {
+    color: #d66a77;
+    font-weight: 600;
+}
+.game-menu {
+    display: block;
+    margin: 15px auto;
+    font-size: 1.5rem;
+}
+.game-menu > li {
+    display: block;
+    border: 3px #fff solid;
+    margin: 30px 30%;
+    position: relative;
     background: rgba(255,255,255,.5);
-    padding: 15px 40px;
-    border: none;
-    border-left: 1px #fff solid;
-    border-right: 1px #fff solid;
 }
-.login-btn:hover {
-    background: rgba(255,255,255,.66);
-    border-left-width: 3px;
-    border-right-width: 3px;
+.game-menu a {
+    display: block;
+    padding: 15px 25px;
+    text-decoration: none;
+    color: #000;
+    font-size: 4rem;
+    font-weight: 600;
+}
+
+/* KEYFRAMES */
+@keyframes background {
+    from {
+        background-position: -1680px 50%, 0 0;
+    }
+    to {
+        background-position: 0 50%, 0 0;
+    }
 }

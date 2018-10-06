@@ -1,6 +1,6 @@
-package controllers;
+package zirioneft.bladers.controllers;
 
-import entity.Player;
+import zirioneft.bladers.entity.Player;
 
 import javax.persistence.*;
 import java.util.List;

@@ -1,19 +1,21 @@
-package servlets;
+package zirioneft.bladers.servlets;
 
-import controllers.PlayerController;
-import entity.Player;
+import zirioneft.bladers.Utils;
+import zirioneft.bladers.controllers.PlayerController;
+import zirioneft.bladers.entity.Player;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-@WebServlet(name = "Login", urlPatterns = "/login")
-public class Login extends HttpServlet {
+@WebServlet(name = "Menu", urlPatterns = "/menu")
+public class Menu extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,18 +30,32 @@ public class Login extends HttpServlet {
             if (playerController.getByName(request.getParameter("login_name")) != null) {
                 if(playerController.getByName(name).getPlayerPass().equals(passHash(pass.trim()))) {
                     url = "/WEB-INF/views/menu.jsp";
+                    HttpSession session = request.getSession(true);
+                    session.setMaxInactiveInterval(300);
+                    session.setAttribute("playerName", name);
+                    session.setAttribute("isLogged", true);
+                    session.setAttribute("playerEntity", playerController.getByName(name));
                 } else {
                     errors += "<span style=\"color: red\">Error:</span> Wrong password!";
                 }
             } else {
-                playerController.add(new Player(name, passHash(pass.trim())));
                 url = "/WEB-INF/views/menu.jsp";
+                HttpSession session = request.getSession(true);
+                session.setMaxInactiveInterval(300);
+                session.setAttribute("playerName", name);
+                session.setAttribute("isLogged", true);
+                session.setAttribute("playerEntity", playerController.add(new Player(name, passHash(pass.trim()))));
             }
         }
 
         request.setAttribute("login", name);
         request.setAttribute("errors", errors);
         request.getRequestDispatcher(url).forward(request, response);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher((Utils.hasLoggedIn(request.getSession(false)))?"/WEB-INF/views/menu.jsp":"/").forward(request, response);
     }
 
     public String passHash(String password) {

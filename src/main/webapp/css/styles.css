@@ -72,16 +72,24 @@ body {
 
 .button {
     cursor: pointer;
-    padding: 10px 40px;
-    font-size: 2rem;
+    padding: 20px 35px;
+    font-size: 3.5rem;
     background: rgb(214, 106, 119);
     text-align: center;
     border: 3px #d66a77 solid;
-    color: #a85455;
+    color: #000;
+    font-weight: 600;
+    transition: .1s all linear;
 }
 .button:hover {
     color: #d68c94;
     background: rgba(214, 106, 119, .5);
+    transition: .1s all linear;
+}
+.button:active {
+    transform: scale(.95);
+    background: rgba(214, 106, 119, .75);
+    transition: .1s all linear;
 }
 
 .banner {
@@ -121,18 +129,12 @@ body {
 }
 .game-menu > li {
     display: block;
-    border: 3px #fff solid;
     margin: 30px 30%;
-    position: relative;
-    background: rgba(255,255,255,.5);
 }
 .game-menu a {
     display: block;
-    padding: 15px 25px;
     text-decoration: none;
     color: #000;
-    font-size: 4rem;
-    font-weight: 600;
 }
 
 /* KEYFRAMES */

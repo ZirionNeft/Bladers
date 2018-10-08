@@ -14,15 +14,15 @@
 
     <div class="login-block">
         <form action="${pageContext.request.contextPath}/menu" name="login" method="post">
-            <input type="text" name="login_name" placeholder="Login" value="${pageContext.request.getAttribute(\"login\")}" class="login-name" required>
+            <input type="text" name="login_name" placeholder="Login" value="${login}" class="login-name" required>
             <input type="password" name="login_pass" placeholder="Password" class="login-pass" required>
             <input type="submit" name="login_submit" value="Go!" class="button">
         </form>
     </div>
 
-    <c:if test="${pageContext.request.getAttribute(\"errors\")}">
+    <c:if test="${errors}">
         <p class="error-block">
-            ${pageContext.request.getAttribute(\"errors\")}
+            ${errors}
         </p>
     </c:if>
 

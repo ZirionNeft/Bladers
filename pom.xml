@@ -6,7 +6,7 @@
 
     <groupId>zirionneft</groupId>
     <artifactId>Bladers</artifactId>
-    <version>0.3</version>
+    <version>0.6</version>
     <packaging>war</packaging>
 
     <dependencies>

@@ -13,8 +13,8 @@
     <p class="game-info">Your rating: <b>${pageContext.request.getAttribute("rating")}</b></p>
 
     <ul class="game-menu">
-        <li><a href="${pageContext.request.contextPath}/start_match">Find An Enemy!</a></li>
-        <li><a href="${pageContext.request.contextPath}/menu">Back</a></li>
+        <li class="button"><a href="${pageContext.request.contextPath}/match?action=queue">Find An Opponent</a></li>
+        <li class="button"><a href="${pageContext.request.contextPath}/menu">Back</a></li>
     </ul>
 
 </t:genericpage>

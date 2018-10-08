@@ -13,8 +13,8 @@
     <p class="game-info">You logged as: <b>${pageContext.session.getAttribute("playerName")}</b></p>
 
     <ul class="game-menu">
-        <li><a href="${pageContext.request.contextPath}/find_match">Duel</a></li>
-        <li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
+        <li class="button"><a href="${pageContext.request.contextPath}/find_match">Duel</a></li>
+        <li class="button"><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
     </ul>
 
 </t:genericpage>

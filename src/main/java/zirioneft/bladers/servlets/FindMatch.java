@@ -17,9 +17,11 @@ public class FindMatch extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
+        Utils.startTime(session);
         String url = "/";
 
         if (Utils.hasLoggedIn(session)) {
+            MatchMaker.removeFromQueue(session);
             request.setAttribute("rating", ((Player)session.getAttribute("playerEntity")).getPlayerRating());
             url = "/WEB-INF/views/find_match.jsp";
         }

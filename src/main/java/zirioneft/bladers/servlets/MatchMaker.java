@@ -26,25 +26,31 @@ public class MatchMaker extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
+        Utils.startTime(session);
         String url = request.getContextPath();
 
         if (Utils.hasLoggedIn(session)) {
             Match m = (Match) session.getAttribute("match");
-            if (m.whoTurn().equals(session.getAttribute("playerName").toString())) {
-                m.doTurn(session.getAttribute("playerName").toString());
+            if (m.whoTurn() != null) {
+                if (m.whoTurn().equals(session.getAttribute("playerName").toString())) {
+                    m.doTurn(session.getAttribute("playerName").toString());
+                }
             }
+            request.getRequestDispatcher("/WEB-INF/views/match.jsp").forward(request, response);
+            return;
         }
 
-        //request.getRequestDispatcher(url).forward(request, response);
+        request.getRequestDispatcher(url).forward(request, response);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
+        Utils.startTime(session);
 
         if (Utils.hasLoggedIn(session)) {
             for(Match m : Collections.list(timers.keys())) {
-                if (m.containsPlayer(session.getAttribute("playerName").toString())) {
+                if (m.containsPlayer(session.getAttribute("playerName").toString()) && m.whoTurn() != null) {
                     session.setAttribute("match", m);
                     request.getRequestDispatcher("/WEB-INF/views/match.jsp").forward(request, response);
                     return;
@@ -61,7 +67,17 @@ public class MatchMaker extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/views/match.jsp").forward(request, response);
                     return;
                 }
+            } else {
+                Match m = (Match)session.getAttribute("match");
+                if(m.getWhoWinner() != null) {
+                    request.getRequestDispatcher("/WEB-INF/views/match.jsp").forward(request, response);
+                    return;
+                }
             }
+        } else {
+            request.setAttribute("errors", "<span style=\"color: red\">Error:</span> Need to Log In!");
+            request.getRequestDispatcher("/").forward(request, response);
+            return;
         }
 
         response.setIntHeader("refresh", 3);
@@ -88,5 +104,13 @@ public class MatchMaker extends HttpServlet {
             }
             return match;
         }
+    }
+
+    public static void removeFromQueue(HttpSession session) {
+        queue.remove(session);
+    }
+
+    public static void removeMatch(Match match) {
+        timers.remove(match);
     }
 }

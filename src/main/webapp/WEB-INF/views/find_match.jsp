@@ -10,10 +10,10 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:genericpage pageName="Menu">
-    <p class="game-info">Your rating: <b>${pageContext.request.getAttribute("rating")}</b></p>
+    <p class="game-info">Your rating points: <b>${pageContext.request.getAttribute("rating")}</b></p>
 
     <ul class="game-menu">
-        <li class="button"><a href="${pageContext.request.contextPath}/match?action=queue">Find An Opponent</a></li>
+        <li class="button"><a href="${pageContext.request.contextPath}/match">Find An Opponent</a></li>
         <li class="button"><a href="${pageContext.request.contextPath}/menu">Back</a></li>
     </ul>
 

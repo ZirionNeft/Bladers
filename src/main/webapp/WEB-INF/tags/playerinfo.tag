@@ -6,12 +6,12 @@
 <%@attribute name="isEnemy" required="true" %>
 <%@attribute name="myTurn" required="true" %>
 
-<div class="duel-player-info">
-    <div class="health-progress-bar" data-health="${playerHealth}">${playerHealth}</div>
-    <div class="player-damage">${playerDamage}</div>
-    <div class="player-name">${playerName}</div>
+<div class="duel-player-info ${isEnemy}">
     <c:if test="${isEnemy == false}">
-        <form action="${pageContext.request.contextPath}/match" method="POST"><button class="player-attack" type="submit" <c:if test="${!myTurn}">disabled</c:if>>Attack</button></form>
+        <form action="${pageContext.request.contextPath}/match" method="POST" class="player-attack-form"><button class='player-attack <c:if test="${!myTurn}">disabled</c:if>' type="submit" <c:if test="${!myTurn}">disabled</c:if>></button></form>
     </c:if>
+    <div class="player-name">${playerName}</div>
+    <div class="health-progress-bar">HP: ${playerHealth}</div>
+    <div class="player-damage">DMG: ${playerDamage}</div>
 </div>
 

@@ -10,6 +10,7 @@ public class Match {
 
     private int id;
     private String whoTurn;
+    private String whoWinner = null;
 
     private Timer timer = null;
     private Integer secRemaining = 30;
@@ -62,62 +63,76 @@ public class Match {
             if (p1Name.equals(whoTurn)) {
                 int dmg = randomDamage.nextInt(p1Damage/2)+p1Damage/2;
                 p2Health -= dmg;
-                battleLog.add(String.format("<br><i>%s hit %s for %d damage</i>", p1Name, p2Name, dmg));
+                battleLog.add(String.format("[%s] hit [%s] for <b style='color:#a20303'>%d</b> damage", p1Name, p2Name, dmg));
                 whoTurn = p2Name;
             } else if (p2Name.equals(whoTurn)) {
                 int dmg = randomDamage.nextInt(p2Damage/2)+p2Damage/2;
                 p1Health -= dmg;
-                battleLog.add(String.format("<br><i>%s hit %s for %d damage</i>", p2Name, p1Name, dmg));
+                battleLog.add(String.format("[%s] hit [%s] for <b style='color:#a20303'>%d</b> damage", p2Name, p1Name, dmg));
                 whoTurn = p1Name;
             }
         }
 
         if (p1Health <= 0) {
-            battleLog.add(String.format("<br><i>%s killed %s</i>", p2Name, p1Name));
+            battleLog.add(String.format("[%s] killed [%s]", p2Name, p1Name));
+            p1Health = 0;
             end(p2Name);
         } else if (p2Health <= 0) {
-            battleLog.add(String.format("<br><i>%s killed %s</i>", p1Name, p2Name));
+            battleLog.add(String.format("[%s] killed [%s]", p1Name, p2Name));
+            p2Health = 0;
             end(p1Name);
         }
     }
 
     public HashMap<String, String> getPlayerInfo(HttpSession session) {
         HashMap<String, String> info = new HashMap<String, String>();
+
         if (p1Session.equals(session)) {
             info.put("name", p1Name);
             info.put("damage", p1Damage.toString());
             info.put("health", p1Health.toString());
+            info.put("healthFull", ""+p1Entity.getPlayerHealth());
             return info;
         } else if (p2Session.equals(session)) {
             info.put("name", p2Name);
             info.put("damage", p2Damage.toString());
             info.put("health", p2Health.toString());
+            info.put("healthFull", ""+p2Entity.getPlayerHealth());
             return info;
         }
         return null;
     }
 
     public void end(String winner) {
-        PlayerController playerController = new PlayerController();
-
-        if (p1Name.equals(winner)) {
-            p1Entity.setPlayerRating(p1Entity.getPlayerRating()+1);
-            p2Entity.setPlayerRating(p2Entity.getPlayerRating()-1);
-        } else if (p2Name.equals(winner)) {
-            p1Entity.setPlayerRating(p1Entity.getPlayerRating()-1);
-            p2Entity.setPlayerRating(p2Entity.getPlayerRating()+1);
-        }
-        p1Entity.setPlayerDamage(p1Damage+1);
-        p1Entity.setPlayerHealth(p1Entity.getPlayerHealth()+1);
-        p2Entity.setPlayerDamage(p2Damage+1);
-        p2Entity.setPlayerHealth(p2Entity.getPlayerHealth()+1);
-
-        playerController.update(p1Entity);
-        playerController.update(p2Entity);
-
-        p1Session.setAttribute("playerEntity", p1Entity);
-        p2Session.setAttribute("playerEntity", p2Entity);
+        if (whoTurn == null)
+            return;
         whoTurn = null;
+        whoWinner = winner;
+        synchronized (this) {
+            PlayerController playerController = new PlayerController();
+
+            if (p1Name.equals(winner)) {
+                p1Entity.setPlayerRating(p1Entity.getPlayerRating()+1);
+                p2Entity.setPlayerRating(p2Entity.getPlayerRating()-1);
+            } else if (p2Name.equals(winner)) {
+                p1Entity.setPlayerRating(p1Entity.getPlayerRating()-1);
+                p2Entity.setPlayerRating(p2Entity.getPlayerRating()+1);
+            }
+            p1Entity.setPlayerDamage(p1Damage+1);
+            p1Entity.setPlayerHealth(p1Entity.getPlayerHealth()+1);
+            p2Entity.setPlayerDamage(p2Damage+1);
+            p2Entity.setPlayerHealth(p2Entity.getPlayerHealth()+1);
+
+            playerController.update(p1Session, p1Entity);
+            playerController.update(p2Session, p2Entity);
+
+            p1Session.setAttribute("playerEntity", p1Entity);
+            p2Session.setAttribute("playerEntity", p2Entity);
+        }
+    }
+
+    public String getWhoWinner() {
+        return whoWinner;
     }
 
     public LinkedList<String> getBattleLog() {
@@ -154,7 +169,7 @@ public class Match {
                 }
                 match.secRemaining--;
             }
-        }, 1000);
+        }, 0, 1000);
         match.timer = timer;
         return timer;
     }

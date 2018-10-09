@@ -9,7 +9,8 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:genericpage pageName="Finding an opponent..." withHeader="true">
-    <span class="">
+    <span class="queue-info">
         Finding an opponent...
     </span>
+    <div class="button" style="margin: 30px 30%;"><a href="${pageContext.request.contextPath}/find_match">Back to duel menu</a></div>
 </t:genericpage>

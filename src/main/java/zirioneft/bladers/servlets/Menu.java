@@ -19,6 +19,10 @@ public class Menu extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession s = request.getSession();
+        PlayerController.resetQueriesInfo(s);
+        Utils.startTime(s);
+
         String errors = "";
         String pass = request.getParameter("login_pass");
         String name = request.getParameter("login_name");
@@ -27,24 +31,26 @@ public class Menu extends HttpServlet {
         PlayerController playerController = new PlayerController();
 
         if (!name.isEmpty() && !pass.isEmpty()){
-            if (playerController.getByName(request.getParameter("login_name")) != null) {
-                if(playerController.getByName(name).getPlayerPass().equals(passHash(pass.trim()))) {
+            if (playerController.getByName(s, request.getParameter("login_name")) != null) {
+                if(playerController.getByName(s, name).getPlayerPass().equals(passHash(pass.trim()))) {
                     url = "/WEB-INF/views/menu.jsp";
                     HttpSession session = request.getSession(true);
+                    PlayerController.resetQueriesInfo(session);
                     session.setMaxInactiveInterval(300);
                     session.setAttribute("playerName", name);
                     session.setAttribute("isLogged", true);
-                    session.setAttribute("playerEntity", playerController.getByName(name));
+                    session.setAttribute("playerEntity", playerController.getByName(s, name));
                 } else {
                     errors += "<span style=\"color: red\">Error:</span> Wrong password!";
                 }
             } else {
                 url = "/WEB-INF/views/menu.jsp";
                 HttpSession session = request.getSession(true);
+                PlayerController.resetQueriesInfo(session);
                 session.setMaxInactiveInterval(300);
                 session.setAttribute("playerName", name);
                 session.setAttribute("isLogged", true);
-                session.setAttribute("playerEntity", playerController.add(new Player(name, passHash(pass.trim()))));
+                session.setAttribute("playerEntity", playerController.add(s, new Player(name, passHash(pass.trim()))));
             }
         }
 
@@ -55,6 +61,7 @@ public class Menu extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Utils.startTime(request.getSession());
         request.getRequestDispatcher((Utils.hasLoggedIn(request.getSession(false)))?"/WEB-INF/views/menu.jsp":"/").forward(request, response);
     }
 

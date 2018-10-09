@@ -46,7 +46,10 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
-
+a {
+    text-decoration: none !important;
+    color: #000;
+}
 /* BLADERS Styles starts here*/
 @font-face {
     font-family: Pxlvetica;
@@ -58,28 +61,51 @@ html, body {
     position: relative;
 }
 body {
-    font-family: Pxlvetica;
+    font-family: Pxlvetica, Arial;
     background: url("../img/background.jpg") repeat-x  0 50% fixed;
+    background-size: cover;
     animation: background 25s linear infinite;
     -webkit-animation: background 25s linear infinite;
 }
 .container {
     display: block;
-    margin: 0 10%;
+    margin: 0 3%;
     position: relative;
     text-align: center;
+    height: 100%;
 }
 
+.error-block {
+    margin-top: 15%;
+    font-size: 4rem;
+}
+
+.technical-info {
+    position: absolute;
+    bottom: 0;
+    right: -3%;
+    display: inline-block;
+    color: #fff;
+    padding: 5px;
+}
 .button {
+    font-family: Pxlvetica, Arial;
     cursor: pointer;
-    padding: 20px 35px;
     font-size: 3.5rem;
     background: rgb(214, 106, 119);
     text-align: center;
-    border: 3px #d66a77 solid;
-    color: #000;
+    border: 5px #ffc0c7 double;
+    color: #fcebdf;
     font-weight: 600;
     transition: .1s all linear;
+}
+.button.padding {
+    padding: 20px 35px;
+}
+.button a {
+    display: block;
+    color: #fcebdf;
+    padding: 20px 35px;
 }
 .button:hover {
     color: #d68c94;
@@ -125,16 +151,135 @@ body {
 .game-menu {
     display: block;
     margin: 15px auto;
-    font-size: 1.5rem;
 }
 .game-menu > li {
     display: block;
     margin: 30px 30%;
 }
-.game-menu a {
+
+.duel-player-info {
     display: block;
-    text-decoration: none;
-    color: #000;
+    position: absolute;
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+}
+.duel-player-info.false {
+    bottom: 0;
+}
+.duel-player-info.true {
+    top: 0;
+}
+.duel-player-info.false .player-name {
+    text-shadow: 0 2px 0 #99d740;
+}
+.duel-player-info.true .player-name {
+    text-shadow: 0 2px 0 #fd4f60;
+}
+.duel-player-info > * {
+    display: inline-block;
+    border: 5px double;
+    padding: 10px;
+}
+.health-progress-bar {
+    border-color: #f5c2b1;
+    padding: 10px 12%;
+    position: relative;
+}
+.health-progress-bar::before {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    height: 100%;
+    background: rgb(223, 52, 69);
+}
+.player-damage {
+    background: #b47d21;
+    border-color: #f5c2b1;
+}
+.player-name {
+    border: 0;
+    font-size: 3rem;
+    vertical-align: middle;
+}
+.player-attack-form {
+    border: none;
+    display: block;
+}
+.player-attack {
+    border: 5px #f5c2b1 double;
+    display: inline-block;
+    background: url(../img/sword.png) 50% 50%;
+    background-size: 75%;
+    background-repeat: no-repeat;
+    width: 85px;
+    height: 85px;
+    background-color: rgba(162, 41, 37, .75);
+    cursor: pointer;
+    transition: .1s all linear;
+}
+.player-attack:hover {
+    background-color: rgba(162, 41, 37, .5);
+    transition: .1s all linear;
+}
+.player-attack:active {
+    transform: scale(.95);
+    background-color: rgba(162, 41, 37, .9);
+    transition: .1s all linear;
+}
+.player-attack.disabled {
+    background-color: rgba(162, 41, 37, .5) !important;
+    opacity: .75;
+    cursor: not-allowed;
+}
+
+.central-info {
+    display: block;
+    position: relative;
+    top: 40%;
+    font-size: 4rem;
+    font-weight: 600;
+    text-align: center;
+}
+.duel-info {
+    position: absolute;
+    left: 0;
+    top: 100px;
+    font-size: 1.3rem;
+    padding: 15px;
+    text-align: left;
+    color: #fff;
+}
+.duel-info-head {
+    display: block;
+    font-weight: 600;
+    font-size: 2rem;
+    color: #fcd6c3;
+    border-bottom: #fcd6c3 5px solid;
+    margin-bottom: 15px;
+}
+.battlelog-list {
+    display: block;
+    max-height: 450px;
+    background: rgba(200,200,200,.33);
+    overflow-y: auto;
+    padding: 5px 20px;
+}
+.battlelog-list li {
+    padding-top: 5px;
+    display: block;
+}
+.queue-info {
+    font-size: 3.5rem;
+    font-weight: 600;
+    color: #62d900;
+    animation: queue 3s linear infinite;
+    -webkit-animation: queue 1.5s linear infinite;
 }
 
 /* KEYFRAMES */
@@ -144,5 +289,16 @@ body {
     }
     to {
         background-position: 0 50%, 0 0;
+    }
+}
+@keyframes queue {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: .35;
+    }
+    100% {
+        opacity: 1;
     }
 }

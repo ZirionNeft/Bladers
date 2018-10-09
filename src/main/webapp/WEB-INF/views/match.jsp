@@ -1,6 +1,7 @@
 <%@ page import="zirioneft.bladers.entity.Match" %>
 <%@ page import="java.util.HashMap" %>
-<%@ page import="java.util.LinkedList" %><%--
+<%@ page import="java.util.LinkedList" %>
+<%@ page import="zirioneft.bladers.servlets.MatchMaker" %><%--
   Created by IntelliJ IDEA.
   User: Midnight
   Date: 04.10.2018
@@ -36,6 +37,8 @@
 
             if (who == null) {
                 who = "end";
+                request.setAttribute("winner", m.getWhoWinner());
+                session.removeAttribute("match");
             } else if (who.equals(myInfo.get("name"))) {
                 who = "me";
             } else if (who.equals(enemyInfo.get("name"))) {
@@ -64,27 +67,45 @@
     <div class="central-info">
         <span class="text">
             <c:if test="${remaining  > 0}">
-                ${remaining} seconds before the start of the duel!
+                <b style="color: #ffdf37">[ ${remaining} sec. to start ]</b>
             </c:if>
             <c:if test="${turn.equals('me')}">
-                Your turn!
+                <b style="color:#99d740">[ Your turn ]</b>
             </c:if>
             <c:if test="${turn.equals('enemy')}">
-                Enemy turn!
+                <b style="color: #fd4f60;">[ Enemy turn ]</b>
             </c:if>
             <c:if test="${turn.equals('end')}">
-                The match is over!
-                <button class="button"><a href="${pageContext.request.contextPath}/find_match"></a></button>
+                The match is over!<br>
+                <c:if test="${winner.equals(myInfo.get('name'))}">
+                    <b style="color:#99d740">You win!</b>
+                </c:if>
+                <c:if test="${winner.equals(enemyInfo.get('name'))}">
+                    <b style="color: #fd4f60;">${enemyInfo.get('name')} win!</b>
+                </c:if>
+                <br><div class="button" style="margin: 0 30%;"><a href="${pageContext.request.contextPath}/find_match">Back to duel menu</a></div>
             </c:if>
         </span>
     </div>
 
     <div class="duel-info">
-        <c:forEach items="${battleLog}" var="item">
-            ${item}
-        </c:forEach>
+        <span class="duel-info-head">BATTLE LOG</span>
+        <ul class="battlelog-list">
+            <c:forEach items="${battleLog}" var="item">
+                <li>${item}</li>
+            </c:forEach>
+        </ul>
     </div>
 
     <t:playerinfo playerName="${ myInfo.get('name')}" playerHealth="${myInfo.get('health')}" playerDamage="${ myInfo.get('damage')}" isEnemy="false" myTurn="${ turn.equals('me')}">
     </t:playerinfo>
+
+    <style>
+        .duel-player-info.true .health-progress-bar::before {
+            width: ${enemyInfo.get('health')/enemyInfo.get('healthFull')*100}%;
+        }
+        .duel-player-info.false .health-progress-bar::before {
+            width: ${myInfo.get('health')/myInfo.get('healthFull')*100}%;
+        }
+    </style>
 </t:genericpage>
